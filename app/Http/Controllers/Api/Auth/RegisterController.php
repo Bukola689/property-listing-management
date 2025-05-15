@@ -16,7 +16,7 @@ class RegisterController extends Controller
     public function register(Request $request)
     {
 
-        //$users = User::first();
+        $users = User::first();
 
         $user = $request->validate([
             'name' => 'required',
