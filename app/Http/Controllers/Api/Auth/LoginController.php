@@ -1,0 +1,38 @@
+<?php
+
+namespace App\Http\Controllers\Api\Auth;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+use Illuminate\Http\Request;
+
+class LoginController extends Controller
+{
+    public function login(Request $request)
+    {
+        $data = $request->validate([
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+
+      $user = User::where('email', $data['email'])->first();
+
+      if(!$user || !Hash::check($data['password'], $user->password))
+      {
+          return response(['message'=>'invalid credentials'], 401);
+      } else {
+        $token  = $user->createToken('myapptoken')->plainTextToken;
+
+        $response = [
+            'user'=>$user,
+            'token'=>$token,
+        ];
+
+        //Cache::put('user');
+
+        return response($response, 200);
+      }
+    }
+}
