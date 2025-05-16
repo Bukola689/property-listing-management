@@ -35,9 +35,9 @@ class RegisterController extends Controller
 
         $user->notify((new RegisterNotification($user))->delay($when));
 
-        event(new UserRegistered($user));
+         event(new UserRegistered($user));
 
-        event(new Registered($user));
+         event(new Registered($user));
 
         $token  = $user->createToken('myapptoken')->plainTextToken;
 
